@@ -5,21 +5,21 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private ParticleSystem bloodEffect;
     
-    private Transform _playerTransform;
+    private Transform _playerTr;
     private Transform _tr;
     private Rigidbody _rb;
     private Collider _col;
     private MeshRenderer _mesh;
     
-    private float _time;
     private bool _active;
     
+    public byte Damage { private get; set; }
     public float LifeTime { private get; set; }
     public float Speed { private get; set; }
 
     private void Start()
     {
-        _playerTransform = GameObject.Find("Player").transform;
+        _playerTr = GameObject.Find("Player").transform;
         _tr = GetComponent<Transform>();
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<Collider>();
@@ -28,12 +28,20 @@ public class Projectile : MonoBehaviour
 
     public void EnableProjectile()
     {
-        _time = Time.time + LifeTime;
-        _tr.position = new Vector3(_playerTransform.position.x, 1f, _playerTransform.position.z + 0.75f);
+        _tr.position = new Vector3(_playerTr.position.x, 1f, _playerTr.position.z + 0.75f);
+        _rb.velocity = Vector3.forward * Speed * Time.fixedDeltaTime;
         
         _col.enabled = true;
         _mesh.enabled = true;
         _active = true;
+        
+        StartCoroutine("CountDisableProjectile");
+    }
+
+    IEnumerator CountDisableProjectile()
+    {
+        yield return new WaitForSeconds(LifeTime);
+        if (_active) StartCoroutine("DisableProjectile");
     }
     
     private IEnumerator DisableProjectile()
@@ -46,16 +54,7 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _tr.position = Vector3.zero;
     }
-
-    private void FixedUpdate()
-    {
-        if (_active)
-        {
-            if (_time <= Time.time) StartCoroutine("DisableProjectile");
-            else _rb.velocity = Vector3.forward * Speed * Time.fixedDeltaTime;
-        }
-    }
-
+    
     void OnTriggerEnter(Collider other)
     {
         StartCoroutine("DisableProjectile");
@@ -63,6 +62,7 @@ public class Projectile : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             bloodEffect.Play();
+            other.GetComponent<Enemy>().Hited(Damage);
         }
     }
 }

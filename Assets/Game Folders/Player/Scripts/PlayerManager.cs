@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    [Header("GameMenu info")] 
+    [SerializeField] private float timeForActiveMenuAfterTheFall;
+    [SerializeField] private float timeForActiveMenuAfterContactWithTheEnemy;
     [Header("Player info")]
     [SerializeField] private Transform player;
     [SerializeField] private float playerSpeed;
@@ -14,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Projectile info")]
     [SerializeField] private byte allNumberProjectile;
     [SerializeField] private GameObject projectileObject;
+    [SerializeField] private byte projectileDamage;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float projectileLifeTime;
     [Header("Enemy info")] 
@@ -23,16 +27,26 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float enemySpeed;
     [SerializeField] private GameObject enemyObject;
     [SerializeField] private Transform[] spawnEnemyPoints;
+
+    private Animator _playerAnim;
     
     private List<Projectile> _listProjectiles;
+    
     private List<Enemy> _listEnemies;
+    private List<Rigidbody> _listRbEnemies;
 
     private bool _spawnEnemyStop;
+    private bool _attackedStop;
+    private bool _playerMoveStop;
     
     private void Awake()
     {
         _listProjectiles = new List<Projectile>();
+        
         _listEnemies = new List<Enemy>();
+        _listRbEnemies = new List<Rigidbody>();
+        
+        _playerAnim = player.GetChild(0).GetComponent<Animator>();
         
         CreateProjectile(allNumberProjectile);
         CreateEnemy(allNumberEnemy);
@@ -51,6 +65,7 @@ public class PlayerManager : MonoBehaviour
             Projectile proj = Instantiate(projectileObject).GetComponent<Projectile>();
             proj.Speed = projectileSpeed;
             proj.LifeTime = projectileLifeTime;
+            proj.Damage = projectileDamage;
             
             _listProjectiles.Add(proj);
         }
@@ -63,6 +78,7 @@ public class PlayerManager : MonoBehaviour
             Enemy enemy = Instantiate(enemyObject).GetComponent<Enemy>();
             enemy.Speed = enemySpeed;
             
+            _listRbEnemies.Add(enemy.GetComponent<Rigidbody>());
             _listEnemies.Add(enemy);
         }
     }
@@ -70,6 +86,7 @@ public class PlayerManager : MonoBehaviour
     private IEnumerator EnemySpawn()
     {
         float spawnTime = 0f;
+        
         byte enemyNumber = 0;
         
         while (true)
@@ -78,9 +95,9 @@ public class PlayerManager : MonoBehaviour
 
             if (!_spawnEnemyStop)
             {
-                byte enemyCount = (byte)Random.Range(1, 4);
-
-                if (enemyCount == 1)
+                byte enemyCount = (byte)Random.Range(1, 100);
+                
+                if ( enemyCount <= 70)
                 {
                     if (enemyNumber == _listEnemies.Count) enemyNumber = 0;
                     
@@ -90,7 +107,7 @@ public class PlayerManager : MonoBehaviour
 
                     enemyNumber++;
                 }
-                else if (enemyCount == 2)
+                else if (enemyCount > 70 && enemyCount <= 95)
                 {
                     byte pointBusy = 3;
                     
@@ -103,6 +120,7 @@ public class PlayerManager : MonoBehaviour
                         if (pointBusy == 3)
                         {
                             _listEnemies[enemyNumber].EnableEnemy(hitPointsAverageValue, spawnEnemyPoints[point].position);
+                            pointBusy = point;
                             enemyNumber++;
                         }
                         else if (point != pointBusy)
@@ -136,7 +154,7 @@ public class PlayerManager : MonoBehaviour
         {
             yield return new WaitForSeconds(playerAttackSpeed);
 
-            if (_listProjectiles.Count != 0)
+            if (!_attackedStop && _listProjectiles.Count != 0)
             {
                 if (projectileNumber == _listProjectiles.Count) projectileNumber = 0;
             
@@ -197,7 +215,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (touchPoint.localPosition.x != 0f)
+        if (!_playerMoveStop && touchPoint.localPosition.x != 0f)
         {
             if (touchPoint.localPosition.x > 0)
             {
@@ -209,6 +227,47 @@ public class PlayerManager : MonoBehaviour
                 player.Translate(Vector3.left * playerSpeed * Time.fixedDeltaTime);
                 cameraOnPlayer.Translate(Vector3.left * playerSpeed * Time.fixedDeltaTime);
             }
+
+            if (player.position.x < -3 || player.position.x > 3)
+            {
+                _playerAnim.Play("FailingPlayer");
+                _spawnEnemyStop = true;
+                _attackedStop = true;
+                _playerMoveStop = true;
+
+                StartCoroutine(ActiveGameMenuAfterFailed(timeForActiveMenuAfterTheFall));
+
+                if (player.position.x < -3)
+                {
+                    player.rotation = Quaternion.Euler(0f, -45f, 0f);
+                }
+                else
+                {
+                    player.rotation = Quaternion.Euler(0f, 45f, 0f);
+                }
+            }
         }
+    }
+
+    public void PlayerContactWithTheEnemy()
+    {
+        _playerAnim.Play("PlayerDead");
+        _spawnEnemyStop = true;
+        _attackedStop = true;
+        _playerMoveStop = true;
+        
+        foreach (var enemyRb in _listRbEnemies)
+        {
+            enemyRb.velocity = Vector3.zero;
+        }
+        
+        StartCoroutine(ActiveGameMenuAfterFailed(timeForActiveMenuAfterContactWithTheEnemy));
+    }
+    
+    IEnumerator ActiveGameMenuAfterFailed(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Time.timeScale = 0f;
+        //Active Menu
     }
 }

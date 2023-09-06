@@ -313,7 +313,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 40}
-  m_LocalScale: {x: 0.75, y: 1, z: 10}
+  m_LocalScale: {x: 0.6, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2132756180}
@@ -559,19 +559,13 @@ PrefabInstance:
       objectReference: {fileID: 2899781498194958216}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
         type: 3}
-      propertyPath: projectileObject
-      value: 
-      objectReference: {fileID: 7478092907436897862, guid: ddc67d317837c4c24bb6a468c45b53e2,
-        type: 3}
-    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
-        type: 3}
-      propertyPath: maxWaitingTimeForNextSpawn
-      value: 5
+      propertyPath: projectileDamage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
         type: 3}
-      propertyPath: spawnEnemyPoints.Array.size
-      value: 3
+      propertyPath: hitPointsAverageValue
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
         type: 3}
@@ -928,6 +922,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8866991547122058995, guid: 39c849939a1fd46c595adc339a4d39b5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

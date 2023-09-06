@@ -44,18 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a3d99ad9fff544518f0dc7c6e52bc36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeForActiveMenuAfterTheFall: 0.4
+  timeForActiveMenuAfterContactWithTheEnemy: 2
   player: {fileID: 0}
   playerSpeed: 3
   playerAttackSpeed: 0.5
   cameraOnPlayer: {fileID: 0}
   touchPoint: {fileID: 0}
   allNumberProjectile: 50
-  projectileObject: {fileID: 0}
+  projectileObject: {fileID: 7478092907436897862, guid: ddc67d317837c4c24bb6a468c45b53e2,
+    type: 3}
   projectileSpeed: 300
   projectileLifeTime: 2
   allNumberEnemy: 30
   hitPointsAverageValue: 50
-  maxWaitingTimeForNextSpawn: 15
+  maxWaitingTimeForNextSpawn: 5
   enemySpeed: 200
   enemyObject: {fileID: 8317450158636289444, guid: d615454833f4840c2b9fb0eb86157208,
     type: 3}
