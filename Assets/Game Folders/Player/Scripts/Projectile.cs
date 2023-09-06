@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public sealed class Projectile : MonoBehaviour
 {
     [SerializeField] private ParticleSystem bloodEffect;
     
@@ -11,8 +11,7 @@ public class Projectile : MonoBehaviour
     private Collider _col;
     private MeshRenderer _mesh;
     
-    private bool _active;
-    
+    public bool Active { get; set; }
     public byte Damage { private get; set; }
     public float LifeTime { private get; set; }
     public float Speed { private get; set; }
@@ -33,7 +32,7 @@ public class Projectile : MonoBehaviour
         
         _col.enabled = true;
         _mesh.enabled = true;
-        _active = true;
+        Active = true;
         
         StartCoroutine("CountDisableProjectile");
     }
@@ -41,12 +40,12 @@ public class Projectile : MonoBehaviour
     IEnumerator CountDisableProjectile()
     {
         yield return new WaitForSeconds(LifeTime);
-        if (_active) StartCoroutine("DisableProjectile");
+        if (Active) StartCoroutine("DisableProjectile");
     }
     
     private IEnumerator DisableProjectile()
     {
-        _active = false;
+        Active = false;
         _col.enabled = false;
         _mesh.enabled = false;
         _rb.velocity = Vector3.zero;

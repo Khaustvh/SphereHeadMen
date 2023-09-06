@@ -338,7 +338,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c74f20f43500e446b90570eeb7463af1, type: 2}
+  - {fileID: 2100000, guid: 5dc9d5ef5fcbced488b19557557a90fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -368,6 +368,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1070320227}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1407471816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1407471817}
+  - component: {fileID: 1407471818}
+  m_Layer: 0
+  m_Name: Finish
+  m_TagString: Finish
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1407471817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407471816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2132756180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1407471818
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407471816}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 1, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1688255173
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +516,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1070320228}
+  - {fileID: 1407471817}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &451340641384643756
@@ -549,6 +603,22 @@ PrefabInstance:
       objectReference: {fileID: 835856971}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
         type: 3}
+      propertyPath: bossSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
+      propertyPath: bossObject
+      value: 
+      objectReference: {fileID: 4838818823218071650, guid: dc66dcd61fc24428d9382a826b1877d3,
+        type: 3}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
+      propertyPath: enemySpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
       propertyPath: touchPoint
       value: 
       objectReference: {fileID: 7720469132214284892}
@@ -559,12 +629,32 @@ PrefabInstance:
       objectReference: {fileID: 2899781498194958216}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
         type: 3}
+      propertyPath: timeToStartBoss
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
       propertyPath: projectileDamage
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
         type: 3}
+      propertyPath: timeForEnableBoss
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
       propertyPath: hitPointsAverageValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
+      propertyPath: hitPointsBossAverageValue
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
+        type: 3}
+      propertyPath: hitPointsEnemyAverageValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6070986326545906834, guid: 6e3aec02b4b304312949b85143556bdb,
@@ -922,11 +1012,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8866991547122058995, guid: 39c849939a1fd46c595adc339a4d39b5,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

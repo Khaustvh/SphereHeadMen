@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public sealed class PlayerManager : MonoBehaviour
 {
     [Header("GameMenu info")] 
     [SerializeField] private float timeForActiveMenuAfterTheFall;
@@ -22,11 +22,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float projectileLifeTime;
     [Header("Enemy info")] 
     [SerializeField] private byte allNumberEnemy;
-    [SerializeField] private short hitPointsAverageValue;
+    [SerializeField] private short hitPointsEnemyAverageValue;
     [SerializeField] private float maxWaitingTimeForNextSpawn;
     [SerializeField] private float enemySpeed;
     [SerializeField] private GameObject enemyObject;
     [SerializeField] private Transform[] spawnEnemyPoints;
+    [Header("Enemy Boss info")]
+    [SerializeField] private short hitPointsBossAverageValue;
+    [SerializeField] private GameObject bossObject;
+    [SerializeField] private float timeForEnableBoss;
+    [SerializeField] private float timeToStartBoss;
+    [SerializeField] private float bossSpeed;
 
     private Animator _playerAnim;
     
@@ -34,6 +40,8 @@ public class PlayerManager : MonoBehaviour
     
     private List<Enemy> _listEnemies;
     private List<Rigidbody> _listRbEnemies;
+    
+    private EnemyBoss _boss;
 
     private bool _spawnEnemyStop;
     private bool _attackedStop;
@@ -55,9 +63,24 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine("Attack");
+        StartCoroutine("EnemyBossSpawn");
         StartCoroutine("EnemySpawn");
     }
 
+    public IEnumerator TakeBoss()
+    {
+        _playerAnim.Play("PreparationPlayer");
+        _attackedStop = true;
+        _playerMoveStop = true;
+        
+        yield return new WaitForSeconds(timeToStartBoss);
+
+        _boss.BossMove();
+        _playerMoveStop = false;
+        _attackedStop = false;
+        _playerAnim.Play("ShootingIdlePlayer");
+    }
+    
     private void CreateProjectile(byte number)
     {
         for (byte i = 0; i < number; i++)
@@ -81,6 +104,20 @@ public class PlayerManager : MonoBehaviour
             _listRbEnemies.Add(enemy.GetComponent<Rigidbody>());
             _listEnemies.Add(enemy);
         }
+
+        _boss = Instantiate(bossObject).GetComponent<EnemyBoss>();
+        _boss.Speed = enemySpeed;
+        _boss.BossSpeed = bossSpeed;
+    }
+
+    IEnumerator EnemyBossSpawn()
+    {
+        yield return new WaitForSeconds(timeForEnableBoss);
+        _spawnEnemyStop = true;
+
+        yield return new WaitForSeconds(5f);
+        
+        _boss.EnableBoss(hitPointsBossAverageValue, spawnEnemyPoints[1].position);
     }
 
     private IEnumerator EnemySpawn()
@@ -93,7 +130,7 @@ public class PlayerManager : MonoBehaviour
         {
             yield return new WaitForSeconds(spawnTime);
 
-            if (!_spawnEnemyStop)
+            if (!_spawnEnemyStop && _listEnemies.Count != 0 && !_listEnemies[enemyNumber].EnemyMove)
             {
                 byte enemyCount = (byte)Random.Range(1, 100);
                 
@@ -103,7 +140,7 @@ public class PlayerManager : MonoBehaviour
                     
                     byte point = (byte)Random.Range(0, 3);
 
-                    _listEnemies[enemyNumber].EnableEnemy(hitPointsAverageValue, spawnEnemyPoints[point].position);
+                    _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[point].position);
 
                     enemyNumber++;
                 }
@@ -119,13 +156,13 @@ public class PlayerManager : MonoBehaviour
                         
                         if (pointBusy == 3)
                         {
-                            _listEnemies[enemyNumber].EnableEnemy(hitPointsAverageValue, spawnEnemyPoints[point].position);
+                            _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[point].position);
                             pointBusy = point;
                             enemyNumber++;
                         }
                         else if (point != pointBusy)
                         {
-                            _listEnemies[enemyNumber].EnableEnemy(hitPointsAverageValue, spawnEnemyPoints[point].position);
+                            _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[point].position);
                             enemyNumber++;
                             break;
                         }
@@ -137,7 +174,7 @@ public class PlayerManager : MonoBehaviour
                     {
                         if (enemyNumber == _listEnemies.Count) enemyNumber = 0;
                         
-                        _listEnemies[enemyNumber].EnableEnemy(hitPointsAverageValue, spawnEnemyPoints[i].position);
+                        _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[i].position);
                         enemyNumber++;
                     }
                 }
@@ -157,9 +194,12 @@ public class PlayerManager : MonoBehaviour
             if (!_attackedStop && _listProjectiles.Count != 0)
             {
                 if (projectileNumber == _listProjectiles.Count) projectileNumber = 0;
-            
-                _listProjectiles[projectileNumber].EnableProjectile();
-                projectileNumber++;
+
+                if (!_listProjectiles[projectileNumber].Active)
+                {
+                    _listProjectiles[projectileNumber].EnableProjectile();
+                    projectileNumber++;
+                }
             }
         }
     }
@@ -183,9 +223,17 @@ public class PlayerManager : MonoBehaviour
                         if (hit.collider.CompareTag("UI"))
                         {
                             touchPoint.position = hit.point;
+                            
+                            _playerAnim.SetBool("ControlPlayer", true);
                         }
                     }
-                    else touchPoint.localPosition = Vector3.zero;
+                    else
+                    {
+                        touchPoint.localPosition = Vector3.zero;
+                        _playerAnim.SetBool("ControlPlayer", false);
+                    }
+                    
+                    _playerAnim.SetFloat("ValueX", touchPoint.localPosition.x);
                     
                     break;
 
@@ -198,15 +246,22 @@ public class PlayerManager : MonoBehaviour
                         if (hit.collider.CompareTag("UI"))
                         {
                             touchPoint.position = hit.point;
+                            _playerAnim.SetBool("ControlPlayer", true);
                         }
                     }
-                    else touchPoint.localPosition = Vector3.zero;
+                    else
+                    {
+                        touchPoint.localPosition = Vector3.zero;
+                        _playerAnim.SetBool("ControlPlayer", false);
+                    }
 
                     break;
 
                 case TouchPhase.Ended:
 
                     touchPoint.localPosition = Vector3.zero;
+                    
+                    _playerAnim.SetBool("ControlPlayer", false);
                     
                     break;
             }
@@ -231,6 +286,7 @@ public class PlayerManager : MonoBehaviour
             if (player.position.x < -3 || player.position.x > 3)
             {
                 _playerAnim.Play("FailingPlayer");
+                _playerAnim.applyRootMotion = true;
                 _spawnEnemyStop = true;
                 _attackedStop = true;
                 _playerMoveStop = true;
@@ -252,6 +308,8 @@ public class PlayerManager : MonoBehaviour
     public void PlayerContactWithTheEnemy()
     {
         _playerAnim.Play("PlayerDead");
+        _playerAnim.applyRootMotion = true;
+        
         _spawnEnemyStop = true;
         _attackedStop = true;
         _playerMoveStop = true;

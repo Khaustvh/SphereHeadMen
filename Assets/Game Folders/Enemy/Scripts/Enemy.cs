@@ -1,16 +1,19 @@
+using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public sealed class Enemy : MonoBehaviour
 {
     [Header("Enemy info")] 
     [SerializeField] private SkinnedMeshRenderer stickmanMesh;
     [SerializeField] private MeshRenderer standMesh;
     [SerializeField] private TextMesh textHitPoints;
+    [SerializeField] private float timeForAnimationDead;
     
     private Rigidbody _rb;
     private Collider _col;
     private Transform _tr;
     private PlayerManager _playerManager;
+    private Animator _trueEnemy;
     
     public bool EnemyMove { get; set; }
     public float Speed { private get; set; }
@@ -23,11 +26,12 @@ public class Enemy : MonoBehaviour
         _col = GetComponent<Collider>();
         _tr = GetComponent<Transform>();
         _playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+        _trueEnemy = GetComponent<Animator>();
     }
 
-    public void EnableEnemy(short hitPointsAverageValue, Vector3 point)
+    public void EnableEnemy(short hitPointsAverageValue, Vector3 position)
     {
-        _tr.position = point;
+        _tr.position = position;
         
         _hitPoints = (short)Random.Range(hitPointsAverageValue / 2, hitPointsAverageValue * 2);
         textHitPoints.text = _hitPoints.ToString();
@@ -40,17 +44,23 @@ public class Enemy : MonoBehaviour
         EnemyMove = true;
     }
     
-    private void DisableEnemy()
+    private IEnumerator DisableEnemy()
     {
         textHitPoints.text = "";
+        _col.enabled = false;
+        
+        _trueEnemy.Play("EnemyDeadAnimation");
+
+        yield return new WaitForSeconds(timeForAnimationDead);
+        
+        standMesh.enabled = false;
+        stickmanMesh.enabled = false;
+        EnemyMove = false;
         
         _rb.velocity = Vector3.zero;
         _tr.position = Vector3.zero;
         
-        standMesh.enabled = false;
-        stickmanMesh.enabled = false;
-        _col.enabled = false;
-        EnemyMove = false;
+        _trueEnemy.Play("Nan");
     }
 
     public void Hited(byte damage)
@@ -59,7 +69,7 @@ public class Enemy : MonoBehaviour
 
         if (_hitPoints <= 0)
         {
-            DisableEnemy();
+            StartCoroutine("DisableEnemy");
             return;
         }
 
@@ -71,6 +81,10 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _playerManager.PlayerContactWithTheEnemy();
+        }
+        else if (other.CompareTag("Finish"))
+        {
+            StartCoroutine("DisableEnemy");
         }
     }
 }

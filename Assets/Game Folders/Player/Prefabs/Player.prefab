@@ -1086,7 +1086,7 @@ GameObject:
   - component: {fileID: 402272759508800199}
   m_Layer: 0
   m_Name: Stickman
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1121,7 +1121,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 7d3b78628e963408d8694426c862f77b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
