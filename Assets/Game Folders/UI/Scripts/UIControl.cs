@@ -14,6 +14,7 @@ public sealed class UIControl : MonoBehaviour
     [SerializeField] private Text projectileDistanceCost;
     [SerializeField] private Text projectileSpeedCost;
     [SerializeField] private Text numberOfCoins;
+    [SerializeField] private Text numberOfLevel;
     
     private readonly string _dataKey = "PlayerStatistics";
 
@@ -26,6 +27,7 @@ public sealed class UIControl : MonoBehaviour
             LoadData();
 
             // _data = new SaveData();
+            // // _data.AllValueOfCoins = 100000000;
             // SaveData();
             // LoadData();
         }
@@ -48,6 +50,7 @@ public sealed class UIControl : MonoBehaviour
         projectileDistanceCost.text = _data.ProjectileDistanceCost.ToString();
         projectileSpeedCost.text = _data.ProjectileSpeedCost.ToString();
         numberOfCoins.text = _data.AllValueOfCoins.ToString();
+        numberOfLevel.text = _data.NumberOfLevel.ToString();
     }
 
     void SaveData()
@@ -57,9 +60,9 @@ public sealed class UIControl : MonoBehaviour
 
     public void UpAttackSpeed()
     {
-        if (_data.AllValueOfCoins - _data.AttackSpeedCost >= 0)
+        if (_data.AllValueOfCoins - _data.AttackSpeedCost >= 0 && _data.AttackSpeed - 0.05f > 0)
         {
-            _data.AllValueOfCoins = (short)(_data.AllValueOfCoins - _data.AttackSpeedCost);
+            _data.AllValueOfCoins -= _data.AttackSpeedCost;
             _data.AttackSpeedLevel++;
             _data.AttackSpeedCost *= 2;
             _data.AttackSpeed -= 0.05f;
@@ -73,9 +76,9 @@ public sealed class UIControl : MonoBehaviour
     {
         if (_data.AllValueOfCoins - _data.DamageCost >= 0)
         {
-            _data.AllValueOfCoins = (short)(_data.AllValueOfCoins - _data.DamageCost);
+            _data.AllValueOfCoins -= _data.DamageCost;
             _data.DamageLevel++;
-            _data.DamageCost *= 2;
+            _data.DamageCost *= 3;
             _data.Damage++;
 
             SaveData();
@@ -87,7 +90,7 @@ public sealed class UIControl : MonoBehaviour
     {
         if (_data.AllValueOfCoins - _data.ProjectileSpeedCost >= 0)
         {
-            _data.AllValueOfCoins = (short)(_data.AllValueOfCoins - _data.ProjectileSpeedCost);
+            _data.AllValueOfCoins -= _data.ProjectileSpeedCost;
             _data.ProjectileSpeedLevel++;
             _data.ProjectileSpeedCost *= 2;
             _data.ProjectileSpeed += 100;
@@ -101,7 +104,7 @@ public sealed class UIControl : MonoBehaviour
     {
         if (_data.AllValueOfCoins - _data.ProjectileDistanceCost >= 0)
         {
-            _data.AllValueOfCoins = (short)(_data.AllValueOfCoins - _data.ProjectileDistanceCost);
+            _data.AllValueOfCoins -= _data.ProjectileDistanceCost;
             _data.ProjectileDistanceLevel++;
             _data.ProjectileDistanceCost *= 2;
             _data.ProjectileDistance += 0.1f;

@@ -6,20 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="5994d5bd-b9b4-4fd2-81d4-43005ef7ab74" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SphereHeadMen/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SphereHeadMen/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Animation/EnemyBossController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Animation/EnemyBossController.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Prefabs/Boss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Prefabs/Boss.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/Enemy.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/EnemyBoss.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/EnemyBoss.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerAnimatorController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerAnimatorController.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerManager/Prefabs/PlayerManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerManager/Prefabs/PlayerManager.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/PlayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/Projectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/Projectile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Scenes/Level.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Scenes/Level.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Scenes/Mainmenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Scenes/Mainmenu.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/SaveData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/SaveData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/UIControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/UIControl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +126,8 @@
       <workItem from="1693910782907" duration="15379000" />
       <workItem from="1693981236071" duration="30302000" />
       <workItem from="1694029324213" duration="1680000" />
-      <workItem from="1694065878632" duration="29125000" />
+      <workItem from="1694065878632" duration="29747000" />
+      <workItem from="1694112562121" duration="6110000" />
     </task>
     <servers />
   </component>

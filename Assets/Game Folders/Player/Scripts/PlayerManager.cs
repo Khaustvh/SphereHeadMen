@@ -27,17 +27,17 @@ public sealed class PlayerManager : MonoBehaviour
     private float _projectileSpeed;
     private float _projectileLifeTime;
     [Header("Enemy info")] 
-    private short _coinsFromTheEnemyAverageValue;
     [SerializeField] private byte allNumberEnemy;
-    private short _hitPointsEnemyAverageValue;
+    private int _coinsFromTheEnemyAverageValue;
+    private int _hitPointsEnemyAverageValue;
     [SerializeField] private float maxWaitingTimeForNextSpawn;
     [SerializeField] private float enemySpeed;
     [SerializeField] private GameObject enemyObject;
     [SerializeField] private Transform[] spawnEnemyPoints;
     [Header("Enemy Boss info")]
-    private short _coinsFromTheBossAverageValue;
-    private short _hitPointsBossAverageValue;
     [SerializeField] private GameObject bossObject;
+    private int _coinsFromTheBossAverageValue;
+    private int _hitPointsBossAverageValue;
     [SerializeField] private float timeForEnableBoss;
     [SerializeField] private float timeToStartBoss;
     [SerializeField] private float bossSpeed;
@@ -58,7 +58,7 @@ public sealed class PlayerManager : MonoBehaviour
     private bool _attackedStop;
     private bool _playerMoveStop;
 
-    private short _allValueOfCoins;
+    private int _allValueOfCoins;
     
     private void Awake()
     {
@@ -399,10 +399,10 @@ public sealed class PlayerManager : MonoBehaviour
 
         _data.AllValueOfCoins = _allValueOfCoins;
         _data.NumberOfLevel++;
-        _data.CoinsFromTheEnemyAverageValue += 20;
-        _data.HitPointsEnemyAverageValue += 20;
-        _data.CoinsFromTheBossAverageValue += 30;
-        _data.HitPointsBossAverageValue += 30;
+        _data.CoinsFromTheEnemyAverageValue += (short)((_data.CoinsFromTheEnemyAverageValue * 50) / 100);
+        _data.HitPointsEnemyAverageValue += (short)((_data.HitPointsEnemyAverageValue * 50) / 100);
+        _data.CoinsFromTheBossAverageValue *= 2;
+        _data.HitPointsBossAverageValue *= 2;
         
         Save();
         
@@ -410,5 +410,4 @@ public sealed class PlayerManager : MonoBehaviour
         
         //Active Menu Victory Menu
     }
-
 }

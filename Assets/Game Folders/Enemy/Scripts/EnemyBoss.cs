@@ -77,12 +77,12 @@ public sealed class EnemyBoss : MonoBehaviour
         textHitPoints.text = _hitPoints.ToString();
     }
 
-    public void EnableBoss(ref short hitPointsAverageValue, Vector3 position, ref short averageValueOfCoins)
+    public void EnableBoss(ref int hitPointsAverageValue, Vector3 position, ref int averageValueOfCoins)
     {
         _tr.position = position;
         
-        _hitPoints = (short)Random.Range(hitPointsAverageValue / 1.5f, hitPointsAverageValue * 1.5f);
-        _coinsFromTheBoss = (short)Random.Range(averageValueOfCoins / 2f, averageValueOfCoins * 2f);
+        _hitPoints = (short)Random.Range(hitPointsAverageValue, hitPointsAverageValue * 1.5f);
+        _coinsFromTheBoss = (short)Random.Range(averageValueOfCoins, averageValueOfCoins * 2f);
         textHitPoints.text = _hitPoints.ToString();
         
         _rb.velocity = Vector3.back * Speed * Time.fixedDeltaTime;

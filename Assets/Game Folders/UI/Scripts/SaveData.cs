@@ -2,27 +2,27 @@ public sealed class SaveData
 {
     public byte NumberOfLevel;
     
-    public short AllValueOfCoins;
+    public int AllValueOfCoins;
 
-    public short HitPointsEnemyAverageValue;
-    public short CoinsFromTheEnemyAverageValue;
-    public short HitPointsBossAverageValue;
-    public short CoinsFromTheBossAverageValue;
+    public int HitPointsEnemyAverageValue;
+    public int CoinsFromTheEnemyAverageValue;
+    public int HitPointsBossAverageValue;
+    public int CoinsFromTheBossAverageValue;
     
     public float AttackSpeed;
     public byte Damage;
     public float ProjectileDistance;
-    public short ProjectileSpeed;
+    public int ProjectileSpeed;
     
     public byte AttackSpeedLevel;
     public byte DamageLevel;
     public byte ProjectileDistanceLevel;
     public byte ProjectileSpeedLevel;
     
-    public short AttackSpeedCost;
-    public short DamageCost;
-    public short ProjectileDistanceCost;
-    public short ProjectileSpeedCost;
+    public int AttackSpeedCost;
+    public int DamageCost;
+    public int ProjectileDistanceCost;
+    public int ProjectileSpeedCost;
 
     public SaveData()
     {
@@ -30,12 +30,12 @@ public sealed class SaveData
 
         HitPointsEnemyAverageValue = 5;
         CoinsFromTheEnemyAverageValue = 5;
-        HitPointsBossAverageValue = 10;
-        CoinsFromTheBossAverageValue = 10;
+        HitPointsBossAverageValue = 30;
+        CoinsFromTheBossAverageValue = 50;
             
         AllValueOfCoins = 0;
         
-        AttackSpeed = 1f;
+        AttackSpeed = 0.7f;
         Damage = 1;
         ProjectileDistance = 1f;
         ProjectileSpeed = 300;
@@ -46,8 +46,8 @@ public sealed class SaveData
         ProjectileSpeedLevel = 1;
         
         AttackSpeedCost = 25;
-        DamageCost = 35;
+        DamageCost = 40;
         ProjectileDistanceCost = 35;
-        ProjectileSpeedCost = 40;
+        ProjectileSpeedCost = 30;
     }
 }

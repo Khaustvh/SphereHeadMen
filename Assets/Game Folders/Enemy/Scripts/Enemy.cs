@@ -30,7 +30,7 @@ public sealed class Enemy : MonoBehaviour
         _trueEnemy = GetComponent<Animator>();
     }
 
-    public void EnableEnemy(ref short hitPointsAverageValue, Vector3 position, ref short averageValueOfCoins)
+    public void EnableEnemy(ref int hitPointsAverageValue, Vector3 position, ref int averageValueOfCoins)
     {
         _tr.position = position;
         
