@@ -6,21 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="5994d5bd-b9b4-4fd2-81d4-43005ef7ab74" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SphereHeadMen/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SphereHeadMen/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/EnemyAnimatorController.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/EnemyAnimatorController.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Prefabs/Enemy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Prefabs/Enemy.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BizulkaProduction/Stickman/Animation/Death_Player_Animation.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Animation/EnemyBossController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Animation/EnemyBossController.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Prefabs/Boss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Prefabs/Boss.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/Enemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/Enemy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Map.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Map/GroundMaterial.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Map/GroundMaterial.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/EnemyBoss.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/EnemyBoss.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerAnimatorController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerAnimatorController.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/Prefabs/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerManager/Prefabs/PlayerManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/PlayerManager/Prefabs/PlayerManager.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/PlayerManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/Projectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game Folders/Player/Scripts/Projectile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +36,12 @@
     <setting file="file://$PROJECT_DIR$/../Archive/Tower_Defense/Assets/Scripts/Scripts_for_First_level/Enemy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Archive/Tower_Defense_3D/Assets/Game/Enemies/Scripts/Enemy_move.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Archive/Tower_Defense_3D/Assets/Game/Towers/Scripts/Projectile.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../Archive/Unity_Developer_test_task/Assets/Game/UI/Scripts/Reload_Scene.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Platformer_mobile/Assets/Game Folder/Control/Joystick/Scripts/JoystickDynamic.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Game Folders/Enemy/Scripts/EnemyBoss.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/SaveData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/SaveManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game Folders/UI/Scripts/UIControl.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -62,7 +65,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -124,6 +127,8 @@
       <workItem from="1693894235112" duration="9137000" />
       <workItem from="1693910782907" duration="15379000" />
       <workItem from="1693981236071" duration="30302000" />
+      <workItem from="1694029324213" duration="1680000" />
+      <workItem from="1694065878632" duration="29125000" />
     </task>
     <servers />
   </component>

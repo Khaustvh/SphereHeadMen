@@ -19,6 +19,7 @@ public sealed class Enemy : MonoBehaviour
     public float Speed { private get; set; }
     
     private short _hitPoints;
+    private short _coinsFromTheEnemy;
 
     private void Start()
     {
@@ -29,11 +30,13 @@ public sealed class Enemy : MonoBehaviour
         _trueEnemy = GetComponent<Animator>();
     }
 
-    public void EnableEnemy(short hitPointsAverageValue, Vector3 position)
+    public void EnableEnemy(ref short hitPointsAverageValue, Vector3 position, ref short averageValueOfCoins)
     {
         _tr.position = position;
         
         _hitPoints = (short)Random.Range(hitPointsAverageValue / 2, hitPointsAverageValue * 2);
+        _coinsFromTheEnemy = (short)Random.Range(averageValueOfCoins / 2, averageValueOfCoins * 2);
+            
         textHitPoints.text = _hitPoints.ToString();
         
         _rb.velocity = Vector3.back * Speed * Time.fixedDeltaTime;
@@ -70,6 +73,8 @@ public sealed class Enemy : MonoBehaviour
         if (_hitPoints <= 0)
         {
             StartCoroutine("DisableEnemy");
+            _playerManager.AddCoins(_coinsFromTheEnemy);
+            
             return;
         }
 

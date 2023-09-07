@@ -18,6 +18,7 @@ public sealed class EnemyBoss : MonoBehaviour
     private PlayerManager _playerManager;
     
     private short _hitPoints;
+    private short _coinsFromTheBoss;
     private bool _activeMove;
     
     public float Speed { get; set; }
@@ -33,6 +34,7 @@ public sealed class EnemyBoss : MonoBehaviour
         _bossAnim = enemyBoss.GetComponent<Animator>();
         _bossCol = enemyBoss.GetComponent<Collider>();
         _bossMesh = enemyBoss.GetChild(1).GetComponent<SkinnedMeshRenderer>();
+        
         _playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
     }
 
@@ -52,11 +54,35 @@ public sealed class EnemyBoss : MonoBehaviour
         }
     }
 
-    public void EnableBoss(short hitPointsAverageValue, Vector3 position)
+    public void Hited(short damage)
+    {
+        _hitPoints -= damage;
+
+        if (_hitPoints <= 0 && _activeMove)
+        {
+            textHitPoints.text = "";
+            
+            _bossCol.enabled = false;
+            _activeMove = false;
+            
+            _bossAnim.Play("DeadBoss");
+            _bossAnim.applyRootMotion = true;
+
+            _playerManager.LevelAccess();
+            _playerManager.AddCoins(_coinsFromTheBoss);
+            
+            return;
+        }
+
+        textHitPoints.text = _hitPoints.ToString();
+    }
+
+    public void EnableBoss(ref short hitPointsAverageValue, Vector3 position, ref short averageValueOfCoins)
     {
         _tr.position = position;
         
         _hitPoints = (short)Random.Range(hitPointsAverageValue / 1.5f, hitPointsAverageValue * 1.5f);
+        _coinsFromTheBoss = (short)Random.Range(averageValueOfCoins / 2f, averageValueOfCoins * 2f);
         textHitPoints.text = _hitPoints.ToString();
         
         _rb.velocity = Vector3.back * Speed * Time.fixedDeltaTime;
@@ -69,7 +95,7 @@ public sealed class EnemyBoss : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (!_activeMove && other.CompareTag("Player"))
         {
             _rb.velocity = Vector3.zero;
             _col.enabled = false;
@@ -77,13 +103,11 @@ public sealed class EnemyBoss : MonoBehaviour
             _playerManager.StartCoroutine("TakeBoss");
             //Player ready to fight
         }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (_activeMove && other.collider.CompareTag("Player"))
+        else if (_activeMove && other.CompareTag("Player"))
         {
+            _bossCol.enabled = false;
             _activeMove = false;
+            
             _bossAnim.Play("PanchBoss");
             _playerManager.PlayerContactWithTheEnemy();
         }

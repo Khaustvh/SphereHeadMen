@@ -50,18 +50,23 @@ public sealed class Projectile : MonoBehaviour
         _mesh.enabled = false;
         _rb.velocity = Vector3.zero;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.01f);
         _tr.position = Vector3.zero;
     }
     
     void OnTriggerEnter(Collider other)
     {
-        StartCoroutine("DisableProjectile");
-        
         if (other.CompareTag("Enemy"))
         {
             bloodEffect.Play();
             other.GetComponent<Enemy>().Hited(Damage);
         }
+        else if (other.CompareTag("Boss"))
+        {
+            bloodEffect.Play();
+            other.GetComponentInParent<EnemyBoss>().Hited(Damage);
+        }
+        
+        StartCoroutine("DisableProjectile");
     }
 }

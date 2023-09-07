@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public sealed class PlayerManager : MonoBehaviour
@@ -7,28 +8,35 @@ public sealed class PlayerManager : MonoBehaviour
     [Header("GameMenu info")] 
     [SerializeField] private float timeForActiveMenuAfterTheFall;
     [SerializeField] private float timeForActiveMenuAfterContactWithTheEnemy;
+    [SerializeField] private float timeForVictoryDance;
+    [SerializeField] private Text numberOfLevel;
+    [SerializeField] private Text numberOfCoins;
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject failedPanel;
     [Header("Player info")]
     [SerializeField] private Transform player;
     [SerializeField] private float playerSpeed;
-    [SerializeField] private float playerAttackSpeed;
+    private float _playerAttackSpeed;
     [Header("PlayerControl info")]
     [SerializeField] private Transform cameraOnPlayer;
     [SerializeField] private RectTransform touchPoint;
     [Header("Projectile info")]
     [SerializeField] private byte allNumberProjectile;
     [SerializeField] private GameObject projectileObject;
-    [SerializeField] private byte projectileDamage;
-    [SerializeField] private float projectileSpeed;
-    [SerializeField] private float projectileLifeTime;
+    private byte _projectileDamage;
+    private float _projectileSpeed;
+    private float _projectileLifeTime;
     [Header("Enemy info")] 
+    private short _coinsFromTheEnemyAverageValue;
     [SerializeField] private byte allNumberEnemy;
-    [SerializeField] private short hitPointsEnemyAverageValue;
+    private short _hitPointsEnemyAverageValue;
     [SerializeField] private float maxWaitingTimeForNextSpawn;
     [SerializeField] private float enemySpeed;
     [SerializeField] private GameObject enemyObject;
     [SerializeField] private Transform[] spawnEnemyPoints;
     [Header("Enemy Boss info")]
-    [SerializeField] private short hitPointsBossAverageValue;
+    private short _coinsFromTheBossAverageValue;
+    private short _hitPointsBossAverageValue;
     [SerializeField] private GameObject bossObject;
     [SerializeField] private float timeForEnableBoss;
     [SerializeField] private float timeToStartBoss;
@@ -43,18 +51,23 @@ public sealed class PlayerManager : MonoBehaviour
     
     private EnemyBoss _boss;
 
+    private readonly string _dataKey = "PlayerStatistics";
+    private SaveData _data;
+
     private bool _spawnEnemyStop;
     private bool _attackedStop;
     private bool _playerMoveStop;
+
+    private short _allValueOfCoins;
     
     private void Awake()
     {
         _listProjectiles = new List<Projectile>();
-        
         _listEnemies = new List<Enemy>();
         _listRbEnemies = new List<Rigidbody>();
-        
         _playerAnim = player.GetChild(0).GetComponent<Animator>();
+
+        Load();
         
         CreateProjectile(allNumberProjectile);
         CreateEnemy(allNumberEnemy);
@@ -67,6 +80,35 @@ public sealed class PlayerManager : MonoBehaviour
         StartCoroutine("EnemySpawn");
     }
 
+    void Load()
+    {
+        _data = SaveManager.Load<SaveData>(_dataKey);
+
+        _allValueOfCoins = _data.AllValueOfCoins;
+        _playerAttackSpeed = _data.AttackSpeed;
+        _projectileDamage = _data.Damage;
+        _projectileSpeed = _data.ProjectileSpeed;
+        _projectileLifeTime = _data.ProjectileDistance;
+        _coinsFromTheEnemyAverageValue = _data.CoinsFromTheEnemyAverageValue;
+        _hitPointsEnemyAverageValue = _data.HitPointsEnemyAverageValue;
+        _coinsFromTheBossAverageValue = _data.CoinsFromTheBossAverageValue;
+        _hitPointsBossAverageValue = _data.HitPointsBossAverageValue;
+
+        numberOfLevel.text = _data.NumberOfLevel.ToString();
+        numberOfCoins.text = _allValueOfCoins.ToString();
+    }
+
+    void Save()
+    {
+        SaveManager.Save(_dataKey, _data);
+    }
+
+    public void AddCoins(short value)
+    {
+        _allValueOfCoins += value;
+        numberOfCoins.text = _allValueOfCoins.ToString();
+    }
+    
     public IEnumerator TakeBoss()
     {
         _playerAnim.Play("PreparationPlayer");
@@ -86,9 +128,9 @@ public sealed class PlayerManager : MonoBehaviour
         for (byte i = 0; i < number; i++)
         {
             Projectile proj = Instantiate(projectileObject).GetComponent<Projectile>();
-            proj.Speed = projectileSpeed;
-            proj.LifeTime = projectileLifeTime;
-            proj.Damage = projectileDamage;
+            proj.Speed = _projectileSpeed;
+            proj.LifeTime = _projectileLifeTime;
+            proj.Damage = _projectileDamage;
             
             _listProjectiles.Add(proj);
         }
@@ -110,14 +152,14 @@ public sealed class PlayerManager : MonoBehaviour
         _boss.BossSpeed = bossSpeed;
     }
 
-    IEnumerator EnemyBossSpawn()
+    private  IEnumerator EnemyBossSpawn()
     {
         yield return new WaitForSeconds(timeForEnableBoss);
         _spawnEnemyStop = true;
 
         yield return new WaitForSeconds(5f);
         
-        _boss.EnableBoss(hitPointsBossAverageValue, spawnEnemyPoints[1].position);
+        _boss.EnableBoss(ref _hitPointsBossAverageValue, spawnEnemyPoints[1].position, ref _coinsFromTheBossAverageValue);
     }
 
     private IEnumerator EnemySpawn()
@@ -130,7 +172,7 @@ public sealed class PlayerManager : MonoBehaviour
         {
             yield return new WaitForSeconds(spawnTime);
 
-            if (!_spawnEnemyStop && _listEnemies.Count != 0 && !_listEnemies[enemyNumber].EnemyMove)
+            if (!_spawnEnemyStop && _listEnemies.Count != 0)
             {
                 byte enemyCount = (byte)Random.Range(1, 100);
                 
@@ -140,9 +182,12 @@ public sealed class PlayerManager : MonoBehaviour
                     
                     byte point = (byte)Random.Range(0, 3);
 
-                    _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[point].position);
+                    if (!_listEnemies[enemyNumber].EnemyMove)
+                    {
+                        _listEnemies[enemyNumber].EnableEnemy(ref _hitPointsEnemyAverageValue, spawnEnemyPoints[point].position, ref _coinsFromTheEnemyAverageValue);
 
-                    enemyNumber++;
+                        enemyNumber++;
+                    }
                 }
                 else if (enemyCount > 70 && enemyCount <= 95)
                 {
@@ -151,20 +196,23 @@ public sealed class PlayerManager : MonoBehaviour
                     for (byte i = 0; i < 10; i++)
                     {
                         if (enemyNumber == _listEnemies.Count) enemyNumber = 0;
-                        
-                        byte point = (byte)Random.Range(0, 3);
-                        
-                        if (pointBusy == 3)
+
+                        if (!_listEnemies[enemyNumber].EnemyMove)
                         {
-                            _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[point].position);
-                            pointBusy = point;
-                            enemyNumber++;
-                        }
-                        else if (point != pointBusy)
-                        {
-                            _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[point].position);
-                            enemyNumber++;
-                            break;
+                            byte point = (byte)Random.Range(0, 3);
+                        
+                            if (pointBusy == 3)
+                            {
+                                _listEnemies[enemyNumber].EnableEnemy(ref _hitPointsEnemyAverageValue, spawnEnemyPoints[point].position, ref _coinsFromTheEnemyAverageValue);
+                                pointBusy = point;
+                                enemyNumber++;
+                            }
+                            else if (point != pointBusy)
+                            {
+                                _listEnemies[enemyNumber].EnableEnemy(ref _hitPointsEnemyAverageValue, spawnEnemyPoints[point].position, ref _coinsFromTheEnemyAverageValue);
+                                enemyNumber++;
+                                break;
+                            }
                         }
                     }
                 }
@@ -174,7 +222,7 @@ public sealed class PlayerManager : MonoBehaviour
                     {
                         if (enemyNumber == _listEnemies.Count) enemyNumber = 0;
                         
-                        _listEnemies[enemyNumber].EnableEnemy(hitPointsEnemyAverageValue, spawnEnemyPoints[i].position);
+                        _listEnemies[enemyNumber].EnableEnemy(ref _hitPointsEnemyAverageValue, spawnEnemyPoints[i].position, ref _coinsFromTheEnemyAverageValue);
                         enemyNumber++;
                     }
                 }
@@ -189,7 +237,7 @@ public sealed class PlayerManager : MonoBehaviour
         byte projectileNumber = 0;
         while (true)
         {
-            yield return new WaitForSeconds(playerAttackSpeed);
+            yield return new WaitForSeconds(_playerAttackSpeed);
 
             if (!_attackedStop && _listProjectiles.Count != 0)
             {
@@ -202,6 +250,14 @@ public sealed class PlayerManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void LevelAccess()
+    {
+        _playerMoveStop = true;
+        _attackedStop = true;
+        StartCoroutine(ActiveGameMenuAfterVictory(timeForVictoryDance));
+        _playerAnim.Play("VictoryDance");
     }
     
     private void Update()
@@ -322,10 +378,37 @@ public sealed class PlayerManager : MonoBehaviour
         StartCoroutine(ActiveGameMenuAfterFailed(timeForActiveMenuAfterContactWithTheEnemy));
     }
     
-    IEnumerator ActiveGameMenuAfterFailed(float time)
+    private IEnumerator ActiveGameMenuAfterFailed(float time)
     {
         yield return new WaitForSeconds(time);
         Time.timeScale = 0f;
-        //Active Menu
+
+        _data.AllValueOfCoins = _allValueOfCoins;
+        
+        Save();
+        
+        failedPanel.SetActive(true);
+        
+        //Active Menu Failed Menu
     }
+    
+    private IEnumerator ActiveGameMenuAfterVictory(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Time.timeScale = 0f;
+
+        _data.AllValueOfCoins = _allValueOfCoins;
+        _data.NumberOfLevel++;
+        _data.CoinsFromTheEnemyAverageValue += 20;
+        _data.HitPointsEnemyAverageValue += 20;
+        _data.CoinsFromTheBossAverageValue += 30;
+        _data.HitPointsBossAverageValue += 30;
+        
+        Save();
+        
+        victoryPanel.SetActive(true);
+        
+        //Active Menu Victory Menu
+    }
+
 }

@@ -46,18 +46,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeForActiveMenuAfterTheFall: 0.4
   timeForActiveMenuAfterContactWithTheEnemy: 2
+  timeForVictoryDance: 1.5
+  numberOfCoins: {fileID: 0}
   player: {fileID: 0}
   playerSpeed: 3
   playerAttackSpeed: 0.5
   cameraOnPlayer: {fileID: 0}
   touchPoint: {fileID: 0}
-  allNumberProjectile: 50
+  allNumberProjectile: 20
   projectileObject: {fileID: 7478092907436897862, guid: ddc67d317837c4c24bb6a468c45b53e2,
     type: 3}
+  projectileDamage: 1
   projectileSpeed: 300
-  projectileLifeTime: 2
-  allNumberEnemy: 30
-  hitPointsAverageValue: 50
+  projectileLifeTime: 1
+  coinsFromTheEnemyAverageValue: 5
+  allNumberEnemy: 15
+  hitPointsEnemyAverageValue: 5
   maxWaitingTimeForNextSpawn: 5
   enemySpeed: 200
   enemyObject: {fileID: 8317450158636289444, guid: d615454833f4840c2b9fb0eb86157208,
@@ -66,3 +70,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  coinsFromTheBossAverageValue: 10
+  hitPointsBossAverageValue: 10
+  bossObject: {fileID: 4838818823218071650, guid: dc66dcd61fc24428d9382a826b1877d3,
+    type: 3}
+  timeForEnableBoss: 10
+  timeToStartBoss: 5
+  bossSpeed: 1
