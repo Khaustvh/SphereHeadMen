@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class EnemyBoss : MonoBehaviour
+public sealed class EnemyBoss : MonoBehaviour //Boss life cycle
 {
     [Header("Enemy Boss info")]
     [SerializeField] private Transform enemyBoss;
@@ -17,8 +17,8 @@ public sealed class EnemyBoss : MonoBehaviour
     private Transform _tr;
     private PlayerManager _playerManager;
     
-    private short _hitPoints;
-    private short _coinsFromTheBoss;
+    private int _hitPoints;
+    private int _coinsFromTheBoss;
     private bool _activeMove;
     
     public float Speed { get; set; }
@@ -38,7 +38,7 @@ public sealed class EnemyBoss : MonoBehaviour
         _playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
     }
 
-    public void BossMove()
+    public void BossMove() //Start boss movement
     {
         _bossAnim.Play("MoveBoss");
         _activeMove = true;
@@ -54,7 +54,7 @@ public sealed class EnemyBoss : MonoBehaviour
         }
     }
 
-    public void Hited(short damage)
+    public void Hited(byte damage) //Boss hit
     {
         _hitPoints -= damage;
 
@@ -77,7 +77,7 @@ public sealed class EnemyBoss : MonoBehaviour
         textHitPoints.text = _hitPoints.ToString();
     }
 
-    public void EnableBoss(ref int hitPointsAverageValue, Vector3 position, ref int averageValueOfCoins)
+    public void EnableBoss(ref int hitPointsAverageValue, Vector3 position, ref int averageValueOfCoins) //Spawn boss
     {
         _tr.position = position;
         
@@ -93,17 +93,16 @@ public sealed class EnemyBoss : MonoBehaviour
         _bossMesh.enabled = true;
     }
     
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) //Collisions wish object (player)
     {
-        if (!_activeMove && other.CompareTag("Player"))
+        if (!_activeMove && other.CompareTag("Player")) //Player ready to fight
         {
             _rb.velocity = Vector3.zero;
             _col.enabled = false;
 
             _playerManager.StartCoroutine("TakeBoss");
-            //Player ready to fight
         }
-        else if (_activeMove && other.CompareTag("Player"))
+        else if (_activeMove && other.CompareTag("Player")) //The player lost
         {
             _bossCol.enabled = false;
             _activeMove = false;

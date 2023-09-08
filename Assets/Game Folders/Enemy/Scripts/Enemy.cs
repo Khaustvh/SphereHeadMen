@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public sealed class Enemy : MonoBehaviour
+public sealed class Enemy : MonoBehaviour //Enemy life cycle
 {
     [Header("Enemy info")] 
     [SerializeField] private SkinnedMeshRenderer stickmanMesh;
@@ -15,11 +15,11 @@ public sealed class Enemy : MonoBehaviour
     private PlayerManager _playerManager;
     private Animator _trueEnemy;
     
-    public bool EnemyMove { get; set; }
+    public bool EnemyMove { get; private set; }
     public float Speed { private get; set; }
     
-    private short _hitPoints;
-    private short _coinsFromTheEnemy;
+    private int _hitPoints;
+    private int _coinsFromTheEnemy;
 
     private void Start()
     {
@@ -30,12 +30,12 @@ public sealed class Enemy : MonoBehaviour
         _trueEnemy = GetComponent<Animator>();
     }
 
-    public void EnableEnemy(ref int hitPointsAverageValue, Vector3 position, ref int averageValueOfCoins)
+    public void EnableEnemy(ref int hitPointsAverageValue, Vector3 position, ref int averageValueOfCoins) //Spawn enemy
     {
         _tr.position = position;
         
-        _hitPoints = (short)Random.Range(hitPointsAverageValue / 2, hitPointsAverageValue * 2);
-        _coinsFromTheEnemy = (short)Random.Range(averageValueOfCoins / 2, averageValueOfCoins * 2);
+        _hitPoints = Random.Range(hitPointsAverageValue / 2, hitPointsAverageValue * 2);
+        _coinsFromTheEnemy = Random.Range(averageValueOfCoins / 2, averageValueOfCoins * 2);
             
         textHitPoints.text = _hitPoints.ToString();
         
@@ -47,7 +47,7 @@ public sealed class Enemy : MonoBehaviour
         EnemyMove = true;
     }
     
-    private IEnumerator DisableEnemy()
+    private IEnumerator DisableEnemy() //Disable enemy
     {
         textHitPoints.text = "";
         _col.enabled = false;
@@ -66,7 +66,7 @@ public sealed class Enemy : MonoBehaviour
         _trueEnemy.Play("Nan");
     }
 
-    public void Hited(byte damage)
+    public void Hited(byte damage) //Enemy hit
     {
         _hitPoints -= damage;
 
@@ -81,7 +81,7 @@ public sealed class Enemy : MonoBehaviour
         textHitPoints.text = _hitPoints.ToString();
     }
     
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) //Collisions wish object (player)
     {
         if (other.CompareTag("Player"))
         {

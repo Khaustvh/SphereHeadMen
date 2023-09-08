@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public sealed class PlayerManager : MonoBehaviour
+public sealed class PlayerManager : MonoBehaviour //Game control class
 {
     [Header("GameMenu info")] 
     [SerializeField] private float timeForActiveMenuAfterTheFall;
@@ -51,7 +51,7 @@ public sealed class PlayerManager : MonoBehaviour
     
     private EnemyBoss _boss;
 
-    private readonly string _dataKey = "PlayerStatistics";
+    private readonly string _dataKey = "PlayerStatistics"; //Data key
     private SaveData _data;
 
     private bool _spawnEnemyStop;
@@ -80,7 +80,7 @@ public sealed class PlayerManager : MonoBehaviour
         StartCoroutine("EnemySpawn");
     }
 
-    void Load()
+    void Load() //Loading Data
     {
         _data = SaveManager.Load<SaveData>(_dataKey);
 
@@ -98,18 +98,18 @@ public sealed class PlayerManager : MonoBehaviour
         numberOfCoins.text = _allValueOfCoins.ToString();
     }
 
-    void Save()
+    void Save() //Saving Data
     {
         SaveManager.Save(_dataKey, _data);
     }
 
-    public void AddCoins(short value)
+    public void AddCoins(int value) //Coins are added when killing an enemy
     {
         _allValueOfCoins += value;
         numberOfCoins.text = _allValueOfCoins.ToString();
     }
     
-    public IEnumerator TakeBoss()
+    public IEnumerator TakeBoss() //Take a finish line
     {
         _playerAnim.Play("PreparationPlayer");
         _attackedStop = true;
@@ -123,7 +123,7 @@ public sealed class PlayerManager : MonoBehaviour
         _playerAnim.Play("ShootingIdlePlayer");
     }
     
-    private void CreateProjectile(byte number)
+    private void CreateProjectile(byte number) //Projectiles are created earlier
     {
         for (byte i = 0; i < number; i++)
         {
@@ -136,7 +136,7 @@ public sealed class PlayerManager : MonoBehaviour
         }
     }
     
-    private void CreateEnemy(byte number)
+    private void CreateEnemy(byte number) //Enemies/Boss are created earlier
     {
         for (byte i = 0; i < number; i++)
         {
@@ -152,7 +152,7 @@ public sealed class PlayerManager : MonoBehaviour
         _boss.BossSpeed = bossSpeed;
     }
 
-    private  IEnumerator EnemyBossSpawn()
+    private  IEnumerator EnemyBossSpawn() //Boss spawning
     {
         yield return new WaitForSeconds(timeForEnableBoss);
         _spawnEnemyStop = true;
@@ -162,7 +162,7 @@ public sealed class PlayerManager : MonoBehaviour
         _boss.EnableBoss(ref _hitPointsBossAverageValue, spawnEnemyPoints[1].position, ref _coinsFromTheBossAverageValue);
     }
 
-    private IEnumerator EnemySpawn()
+    private IEnumerator EnemySpawn() //Enemies spawning
     {
         float spawnTime = 0f;
         
@@ -176,7 +176,7 @@ public sealed class PlayerManager : MonoBehaviour
             {
                 byte enemyCount = (byte)Random.Range(1, 100);
                 
-                if ( enemyCount <= 70)
+                if ( enemyCount <= 70) //70% that there will be one enemy
                 {
                     if (enemyNumber == _listEnemies.Count) enemyNumber = 0;
                     
@@ -189,7 +189,7 @@ public sealed class PlayerManager : MonoBehaviour
                         enemyNumber++;
                     }
                 }
-                else if (enemyCount > 70 && enemyCount <= 95)
+                else if (enemyCount > 70 && enemyCount <= 95) //25% that there will be two enemies
                 {
                     byte pointBusy = 3;
                     
@@ -216,7 +216,7 @@ public sealed class PlayerManager : MonoBehaviour
                         }
                     }
                 }
-                else
+                else //5% that there will be three enemies
                 {
                     for (byte i = 0; i < 3; i++)
                     {
@@ -232,7 +232,7 @@ public sealed class PlayerManager : MonoBehaviour
         }
     }
     
-    private IEnumerator Attack()
+    private IEnumerator Attack() //Projectile spawning
     {
         byte projectileNumber = 0;
         while (true)
@@ -252,7 +252,7 @@ public sealed class PlayerManager : MonoBehaviour
         }
     }
 
-    public void LevelAccess()
+    public void LevelAccess() //When defeating the boss, the level is completed
     {
         _playerMoveStop = true;
         _attackedStop = true;
@@ -260,7 +260,7 @@ public sealed class PlayerManager : MonoBehaviour
         _playerAnim.Play("VictoryDance");
     }
     
-    private void Update()
+    private void Update() //Responsible for the position of the finger on the screen
     {
         if (Input.touchCount == 1)
         {
@@ -324,7 +324,7 @@ public sealed class PlayerManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //Responsible for the movement of the hero
     {
         if (!_playerMoveStop && touchPoint.localPosition.x != 0f)
         {
@@ -339,7 +339,7 @@ public sealed class PlayerManager : MonoBehaviour
                 cameraOnPlayer.Translate(Vector3.left * playerSpeed * Time.fixedDeltaTime);
             }
 
-            if (player.position.x < -3 || player.position.x > 3)
+            if (player.position.x < -3 || player.position.x > 3) //Lose if you go beyond the level limits
             {
                 _playerAnim.Play("FailingPlayer");
                 _playerAnim.applyRootMotion = true;
@@ -361,7 +361,7 @@ public sealed class PlayerManager : MonoBehaviour
         }
     }
 
-    public void PlayerContactWithTheEnemy()
+    public void PlayerContactWithTheEnemy() //Lose on contact with an enemy
     {
         _playerAnim.Play("PlayerDead");
         _playerAnim.applyRootMotion = true;
@@ -378,7 +378,7 @@ public sealed class PlayerManager : MonoBehaviour
         StartCoroutine(ActiveGameMenuAfterFailed(timeForActiveMenuAfterContactWithTheEnemy));
     }
     
-    private IEnumerator ActiveGameMenuAfterFailed(float time)
+    private IEnumerator ActiveGameMenuAfterFailed(float time) //Active Menu Failed Menu
     {
         yield return new WaitForSeconds(time);
         Time.timeScale = 0f;
@@ -388,11 +388,9 @@ public sealed class PlayerManager : MonoBehaviour
         Save();
         
         failedPanel.SetActive(true);
-        
-        //Active Menu Failed Menu
     }
     
-    private IEnumerator ActiveGameMenuAfterVictory(float time)
+    private IEnumerator ActiveGameMenuAfterVictory(float time) //Active Menu Victory Menu
     {
         yield return new WaitForSeconds(time);
         Time.timeScale = 0f;
@@ -407,7 +405,5 @@ public sealed class PlayerManager : MonoBehaviour
         Save();
         
         victoryPanel.SetActive(true);
-        
-        //Active Menu Victory Menu
     }
 }

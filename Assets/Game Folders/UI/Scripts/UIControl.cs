@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public sealed class UIControl : MonoBehaviour
+public sealed class UIControl : MonoBehaviour //Main menu/level UI control class
 {
     [Header("UI Info For Main Menu")] 
     [SerializeField] private Text[] attackSpeed;
@@ -16,24 +16,19 @@ public sealed class UIControl : MonoBehaviour
     [SerializeField] private Text numberOfCoins;
     [SerializeField] private Text numberOfLevel;
     
-    private readonly string _dataKey = "PlayerStatistics";
+    private readonly string _dataKey = "PlayerStatistics"; //Data key
 
     private SaveData _data;
     
     private void Start()
     {
-        if (gameObject.name == "CanvasMenu")
+        if (gameObject.name == "CanvasMenu") //If this is the main menu, load data
         {
             LoadData();
-
-            // _data = new SaveData();
-            // // _data.AllValueOfCoins = 100000000;
-            // SaveData();
-            // LoadData();
         }
     }
 
-    void LoadData()
+    void LoadData() //Loading data
     {
         _data = SaveManager.Load<SaveData>(_dataKey);
 
@@ -53,12 +48,12 @@ public sealed class UIControl : MonoBehaviour
         numberOfLevel.text = _data.NumberOfLevel.ToString();
     }
 
-    void SaveData()
+    void SaveData() //Saving data
     {
         SaveManager.Save(_dataKey, _data);
     }
 
-    public void UpAttackSpeed()
+    public void UpAttackSpeed() //Improve attack speed
     {
         if (_data.AllValueOfCoins - _data.AttackSpeedCost >= 0 && _data.AttackSpeed - 0.05f > 0)
         {
@@ -72,7 +67,7 @@ public sealed class UIControl : MonoBehaviour
         }
     }
     
-    public void UpDamage()
+    public void UpDamage() //Improve damage
     {
         if (_data.AllValueOfCoins - _data.DamageCost >= 0)
         {
@@ -86,7 +81,7 @@ public sealed class UIControl : MonoBehaviour
         }
     }
     
-    public void UpProjectileSpeed()
+    public void UpProjectileSpeed() //Improve projectile speed
     {
         if (_data.AllValueOfCoins - _data.ProjectileSpeedCost >= 0)
         {
@@ -100,7 +95,7 @@ public sealed class UIControl : MonoBehaviour
         }
     }
     
-    public void UpProjectileDistance()
+    public void UpProjectileDistance() //Improve projectile lifetime
     {
         if (_data.AllValueOfCoins - _data.ProjectileDistanceCost >= 0)
         {
@@ -114,13 +109,13 @@ public sealed class UIControl : MonoBehaviour
         }
     }
     
-    public static void StartLevel()
+    public static void StartLevel() //Start/Restart level
     {
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
     }
 
-    public void ExitToMainMenu()
+    public void ExitToMainMenu() //Exit to main menu
     {
         SceneManager.LoadScene(0);
     }

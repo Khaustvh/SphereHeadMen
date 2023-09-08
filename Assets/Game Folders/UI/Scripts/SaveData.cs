@@ -1,4 +1,4 @@
-public sealed class SaveData
+public sealed class SaveData //Wrapper for data
 {
     public byte NumberOfLevel;
     
@@ -24,7 +24,7 @@ public sealed class SaveData
     public int ProjectileDistanceCost;
     public int ProjectileSpeedCost;
 
-    public SaveData()
+    public SaveData() //Default values
     {
         NumberOfLevel = 1;
 

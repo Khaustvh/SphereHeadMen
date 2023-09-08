@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public sealed class Projectile : MonoBehaviour
+public sealed class Projectile : MonoBehaviour //Projectile life cycle
 {
     [SerializeField] private ParticleSystem bloodEffect;
     
@@ -11,7 +11,7 @@ public sealed class Projectile : MonoBehaviour
     private Collider _col;
     private MeshRenderer _mesh;
     
-    public bool Active { get; set; }
+    public bool Active { get; private set; }
     public byte Damage { private get; set; }
     public float LifeTime { private get; set; }
     public float Speed { private get; set; }
@@ -25,7 +25,7 @@ public sealed class Projectile : MonoBehaviour
         _mesh = GetComponent<MeshRenderer>();
     }
 
-    public void EnableProjectile()
+    public void EnableProjectile() //Spawn projectile
     {
         _tr.position = new Vector3(_playerTr.position.x, 1f, _playerTr.position.z + 0.75f);
         _rb.velocity = Vector3.forward * Speed * Time.fixedDeltaTime;
@@ -37,13 +37,13 @@ public sealed class Projectile : MonoBehaviour
         StartCoroutine("CountDisableProjectile");
     }
 
-    IEnumerator CountDisableProjectile()
+    IEnumerator CountDisableProjectile() //Projectile lifetime
     {
         yield return new WaitForSeconds(LifeTime);
         if (Active) StartCoroutine("DisableProjectile");
     }
     
-    private IEnumerator DisableProjectile()
+    private IEnumerator DisableProjectile() //Disable projectile
     {
         Active = false;
         _col.enabled = false;
@@ -54,7 +54,7 @@ public sealed class Projectile : MonoBehaviour
         _tr.position = Vector3.zero;
     }
     
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) //Collisions wish object
     {
         if (other.CompareTag("Enemy"))
         {
